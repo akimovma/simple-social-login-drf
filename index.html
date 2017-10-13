@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="container">
+
+
+
+  <button id="social-login-btn">Login With Google</button>
+</div>
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="hello.all.min.js"></script>
+
+    <button onclick="login()">Login With Google</button>
+    <button onclick="logout()">Sign Out</button>
+
+    <script>
+      var location_https = window.location.href.indexOf('https://') === 0;
+    var GOOGLE_CLIENT_ID = '521697125792-psai4ka24lvo8h2oeg6u8mckh45fp0iu.apps.googleusercontent.com';
+
+    hello.init({
+      google: GOOGLE_CLIENT_ID
+    }, {
+      redirect_uri: 'http://127.0.0.1:8000'
+    });
+
+    hello.on('auth.login', function (auth) {
+      console.log(auth);
+      var token = auth.authResponse.access_token;
+      $.post({
+        url: 'http://127.0.0.1:8000/rest-auth/google/',
+        data: {"access_token": token},
+      }).done(function (data) {
+        console.log(data);
+      });
+    });
+
+    function logout() {
+      console.log('logout');
+      hello('google').logout();
+    }
+
+    function login(network) {
+
+      hello('google').login();
+    }
+
+
+</script>
+</body>
+</html>
